@@ -1,0 +1,49 @@
+doctype
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Chennai CSV Viewer
+    link(rel="stylesheet", href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css")
+    link(rel="stylesheet", href="/csv-table.css")
+  body
+    h1 CSV uploaded...
+    h3
+      span Saved to table target_
+      span= mapid
+
+    h1 What are the latitude and longitude columns?
+    form(action="/set_cols", method="POST")
+      input(type="hidden", name="mapid", value=mapid)
+      h3 Latitude / Y:
+      label.problem.y Y-values are outside of India
+      select#y_col(name="y")
+        for col in Object.keys(rows[0])
+          option= col
+
+      h3 Longitude / X:
+      label.problem.x X-values are outside of India
+      select#x_col(name="x")
+        for col in Object.keys(rows[0])
+          option= col
+
+      br
+      br
+      input(type="submit", value="Set Columns", disabled="true")
+
+    h3 First 10 rows:
+    table#example.display
+      thead
+        tr.headers
+          for col in Object.keys(rows[0])
+            th= col
+      tbody
+        for row in rows
+          tr
+            for col in Object.keys(row)
+              td= row[col]
+
+    script(src="//code.jquery.com/jquery-3.3.1.js")
+    script(src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")
+    script let rows = !{JSON.stringify(rows)}
+    script(src="/csv-table.js")

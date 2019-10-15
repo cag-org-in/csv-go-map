@@ -1,0 +1,35 @@
+body {
+  font-family: arial, sans-serif;
+  padding: 20px;
+}
+table {
+  width: 100%;
+}
+#example_filter,
+.dataTables_paginate,
+.dataTables_length,
+.dataTables_info {
+  display: none;
+}
+form {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+form select {
+  font-size: 150%;
+}
+label {
+  display: block;
+}
+label.problem {
+  display: none;
+  color: #f00;
+}
+input[type="submit"] {
+  font-size: 16pt;
+  padding: 10px;
+  cursor: pointer;
+}
+input[type="submit"][disabled] {
+  cursor: default;
+}

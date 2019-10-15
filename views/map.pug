@@ -1,0 +1,15 @@
+doctype
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Chennai Map Viewer
+    link(rel="stylesheet", href="//stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css", integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu", crossorigin="anonymous")
+    link(rel="stylesheet", href="/map.css")
+  body
+    #map
+
+    script(src="//code.jquery.com/jquery-3.3.1.js")
+    script let rows = !{JSON.stringify(rows)}
+    script(src="/map.js")
+    script(src="//maps.googleapis.com/maps/api/js?key=AIzaSyDruAgAuewqg9GV_cxkj9PgGS4gvCvRLDY&callback=initMap", async, defer)
