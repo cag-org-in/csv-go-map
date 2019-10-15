@@ -61,7 +61,7 @@ app.post('/set_cols', (req, res) => {
 
 app.get('/map/:mapid', (req, res) => {
   let mapid = req.params.mapid * 1;
-  client.query('SELECT coord_x_final, coord_y_final FROM "target_' + mapid + '"', (err, response) => {
+  client.query('SELECT CONCAT(CONCAT(coord_x_final::text, \',\'), coord_y_final::text) AS xy FROM "target_' + mapid + '"', (err, response) => {
     if (err) {
       return res.json(err);
     }

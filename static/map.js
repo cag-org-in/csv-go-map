@@ -37,37 +37,47 @@ function initMap() {
   // });
 
   rows.forEach(row => {
+    row.xy = row.xy.split(",");
+    row.coord_x_final = row.xy[0];
+    row.coord_y_final = row.xy[1];
+    delete row.xy;
     if (row.coord_y_final * 1 && row.coord_x_final * 1) {
       let marker = new google.maps.Marker({
         map: map,
         clickable: true,
         position: new google.maps.LatLng(row.coord_y_final * 1, row.coord_x_final * 1)
       });
+      let showMarker = (matches) => {
+        let table = '<h4>Results</h4><table class="table"><thead><tr>';
+        table += Object.keys(matches[0]).map(col => {
+          if (col !== 'coord_x_final' && col !== 'coord_y_final') {
+            return '<th>' + col + '</th>';
+          }
+        }).join("");
+        table += '</tr></thead><tbody>';
+        table += matches.map(match => {
+          let htmlrow = '<tr>';
+          Object.keys(match).forEach(col => {
+            if (col !== 'coord_x_final' && col !== 'coord_y_final') {
+              row[col] = match[col];
+              htmlrow += '<td>' + match[col] + '</td>';
+            }
+          });
+          return htmlrow + '</tr>';
+        });
+        table += '</tbody></table>';
+        info.setContent(table);
+        info.open(map, marker);
+      };
       marker.addListener('click', function(e) {
         info.close();
-        fetch("/api?mapid=" + mapid + "&x=" + row.coord_x_final + "&y=" + row.coord_y_final)
-          .then(res => res.json())
-          .then((matches) => {
-            let table = '<h4>Results</h4><table class="table"><thead><tr>';
-            table += Object.keys(matches[0]).map(col => {
-              if (col !== 'coord_x_final' && col !== 'coord_y_final') {
-                return '<th>' + col + '</th>';
-              }
-            }).join("");
-            table += '</tr></thead><tbody>';
-            table += matches.map(match => {
-              let row = '<tr>';
-              Object.keys(match).forEach(col => {
-                if (col !== 'coord_x_final' && col !== 'coord_y_final') {
-                  row += '<td>' + match[col] + '</td>';
-                }
-              });
-              return row + '</tr>';
-            });
-            table += '</tbody></table>';
-            info.setContent(table);
-            info.open(map, marker);
-          });
+        if (Object.keys(row).length === 2) {
+          fetch("/api?mapid=" + mapid + "&x=" + row.coord_x_final + "&y=" + row.coord_y_final)
+            .then(res => res.json())
+            .then(showMarker);
+        } else {
+          showMarker([row]);
+        }
       });
     }
   });
